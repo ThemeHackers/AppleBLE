@@ -1,4 +1,3 @@
-# Based on the previous work of chipik / _hexway
 import random
 import argparse
 import bluetooth._bluetooth as bluez
