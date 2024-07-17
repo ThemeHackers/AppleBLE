@@ -8,7 +8,7 @@
 
 ## Updates
 
-**9/21/23** <br>
+**7/17/24** <br>
 <br>
 Thanks to [0DayCTF](https://github.com/0dayctf) the random option has been added!<br> 
 <br>
@@ -18,61 +18,9 @@ Thanks to [0DayCTF](https://github.com/0dayctf) the random option has been added
 ```python3 app.py -r -i 20``` <br>
 to set to it to random and the time interval to 20ms, making it more spammy.<br>
 <br>
-**9/13/2023** <br>
-<br>
-After [Techryptic's attempt to steal the work of myself and WillyJL](https://techcrunch.com/2023/09/05/flipper-zero-hacking-iphone-flood-popups/), Willy has taken the time to give an insanely in-depth timeline of the events and proof of the work being stolen (Git and my typos dont lie!) Check out the full report below and please help us spread the word that the person who has been all over the news outlets claiming this as their work, stole the code and gave none of the actual developers credit.<br>
-<br>
-[The Controversy Behind Apple BLE Spam](https://willyjl.dev/blog/the-controversy-behind-apple-ble-spam)
-### Flipper Zero
-
-Thanks to the amazing work of [Willy-JL](https://github.com/Willy-JL/Willy-JL) this has been added to the [Flipper Zero Momentum Firmware](https://github.com/Next-Flip/Momentum-Firmware).
-#### To install it now, follow the guide below from the Momentum Firmware page to clone and compile the current build that contains the Apple BLE Spam app.
-
-> :warning: **Warning!** <br>
-> We will not give basic support for compiling in our server. This is intended for people that already *know* what they are doing!
-
-```bash
-To download the repository:
-$ git clone --recursive --jobs 8 https://github.com/Next-Flip/Momentum-Firmware.git
-$ cd Momentum-Firmware/
-
-To flash directly to the Flipper (Needs to be connected via USB, qFlipper closed)
-$ ./fbt flash_usb_full
-
-To compile a TGZ package
-$ ./fbt updater_package
-
-To build and launch a single app:
-$ ./fbt launch APPSRC=your_appid
-```
-
-### ESP-32
-
-Thanks to [ronaldstoner](https://github.com/ronaldstoner) for porting this over to the ESP-32
-
-### Android
-
-Check out this in-depth walk though by [Mobile Hacker](https://www.mobile-hacker.com/2023/09/07/spoof-ios-devices-with-bluetooth-pairing-messages-using-android/) about running AppleJuice on a rooted Android phone.
 
 ## About This Project
-This was created in response to the various AppleTV spoof messages being sent out during [DEF CON 31](https://techcrunch.com/2023/08/14/researcher-says-they-were-behind-iphone-popups-at-def-con/). After experiencing it first hand, I had to figure out what was happening. The existing research projects I could find (see *credits*) had great info but were both a couple years out of date with broken package dependencies, so I decided to take what I could from them and start building from there.
-
-## Hardware Requirements
-
-To run these scripts you need a Linux machine with an internal Bluetooth card or a USB Bluetooth adapter.
-
-All original testing was done on a Lenovo T480 with a built-in Bluetooth adapter.\
-Later tested on Raspberry Pi 3B+ and Raspberry Pi Zero W running Kali Linux with a [Zexmte Long Range USB Bluetooth 5.1 Adapter with Dual Antenna](https://zexmte.com/collections/bluetooth-adapter/products/plug-play-long-range-bluetooth-5-1-usb-adapter).<br>
-
-<img src="https://github.com/ECTO-1A/AppleJuice/assets/112792126/a6f2b9fa-ca26-45c1-a440-681beb55c76e" width="300"><br>
-
-> **Range** <br>
-> Range of messages by device type
-
-| Device    | Range |
-|:----------|:----------|
-| Lenovo    | Couple feet from machine |
-| Raspberry Pi and long range adapter   | 20+ feet indoors in heavy BLE traffic |
+Here is a script for Apple Proximity Pairing Notification Spoofing using Bluetooth Low Energy (BLE) advertising. The script allows you to send BLE advertisements that mimic various Apple devices, such as AirPods and Beats headphones, or even Apple TV setup messages.
 
 ## Installation Instructions
 Please follow in this exact order or you might run into issues with bluetooth dependencies.
@@ -165,19 +113,6 @@ Available message options:
 28: Transfer Number to New Phone
 29: TV Color Balance
 ```
-
-## Examples
-
-`beatssolopro.py`
-> **Model**: Beats Solo Pro
-
-<img src="https://github.com/ECTO-1A/AppleJuice/assets/112792126/c3218a09-7aef-483b-957d-f3c19a55fc08" width="300">
-
-`airpods_max.py`
-> **Model**: Airpods Max
-
-<img src="https://github.com/ECTO-1A/AppleJuice/assets/112792126/5eea40e8-d7c1-4324-9f3d-1425228d0458" width="300">
-
 ### Credit
 - [FuriousMAC](https://github.com/furiousMAC/continuity) and [Hexway](https://github.com/hexway/apple_bleee) for all the prior research on Apple BLE, Continuity, and building the Wireshark disector.
 - [Jae Bochs](https://infosec.exchange/@jb0x168/110879394826675242) for [exposing this to me at DEF CON 31](https://techcrunch.com/2023/08/14/researcher-says-they-were-behind-iphone-popups-at-def-con/) which made me jump into learning about BLE.
