@@ -27,7 +27,7 @@ Please follow in this exact order or you might run into issues with bluetooth de
 
 ### Clone the Main Repo
 ```bash
-git clone https://github.com/ECTO-1A/AppleJuice.git && cd ./AppleJuice
+git clone https://github.com/ThemeHackers/AppleJuice.git && cd ./AppleBLE
 ```
 
 ### Install dependencies
@@ -87,7 +87,7 @@ Devices:
 All messages have been combined into a single app. You can now run `app.py` to get a list of available options.<br>
 To run the script use `-d (number of message)`  
 > **Example** <br> 
-> `app.py -d 13`
+> `start.py -d 13`
 
 ```python
 sudo python3 start.py
