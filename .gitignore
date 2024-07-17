@@ -1,0 +1,24 @@
+# Bytecode files (Python)
+*.pyc
+__pycache__/
+
+# Virtual environments
+venv/
+env/
+
+# Dependency directories
+node_modules/
+
+# Configuration files (potential secrets)
+*.ini
+*.cfg
+*.env
+
+# Log files
+*.log
+
+# System files
+.DS_Store
+
+# IDE-specific files (example for PyCharm)
+.idea/
