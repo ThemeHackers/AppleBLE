@@ -56,7 +56,17 @@ sudo pip install -r requirements.txt
 ```bash
 sudo setcap cap_net_raw,cap_net_admin+eip $(eval readlink -f $(which python))
 ```
-
+### If Bluetooth not working
+```base
+sudo service bluetooth start
+sudo systemctl enable bluetooth
+```
+### Install pybluez 
+```base
+git clone https://github.com/pybluez/pybluez
+cd pybluez/
+sudo python3 setup.py install
+```
 ### Reboot Machine
 Several users have reported the need for a reboot after installing the bluetooth packages in order for everything to work properly.
 
@@ -80,7 +90,7 @@ To run the script use `-d (number of message)`
 > `app.py -d 13`
 
 ```python
-python3 app.py
+sudo python3 start.py
 Please select a message option using -d.
 Available message options:
 1: Airpods
