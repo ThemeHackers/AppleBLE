@@ -27,7 +27,7 @@ Please follow in this exact order or you might run into issues with bluetooth de
 
 ### Clone the Main Repo
 ```bash
-git clone https://github.com/ThemeHackers/AppleJuice.git && cd ./AppleBLE
+git clone https://github.com/ThemeHackers/AppleBLE.git && cd ./AppleBLE
 ```
 
 ### Install dependencies
