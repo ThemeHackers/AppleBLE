@@ -1,8 +1,20 @@
+!/usr/bin/python3
 import random
 import argparse
-import bluetooth._bluetooth as bluez
+import sys
+
+try:
+    import bluetooth._bluetooth as bluez
+except ImportError:
+    print("The bluetooth library is not installed. Please install it using 'pip install pybluez'.")
+    sys.exit(1)
+
 from time import sleep
-from utils.bluetooth_utils import toggle_device, start_le_advertising, stop_le_advertising
+try:
+    from utils.bluetooth_utils import toggle_device, start_le_advertising, stop_le_advertising
+except ImportError:
+    print("The utils.bluetooth_utils module is not found. Please ensure it is in your PYTHONPATH.")
+    sys.exit(1)
 
 # Add a docstring to describe the purpose of the script
 help_desc = '''
