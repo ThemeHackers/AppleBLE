@@ -4,21 +4,43 @@ __pycache__/
 
 # Virtual environments
 venv/
-env/
+.venv/  # Common alternative name for virtual environments
 
-# Dependency directories
+# Dependencies
+/lib/  # Python compiled libraries 
+/build/ # Compiled files
 node_modules/
 
-# Configuration files (potential secrets)
+# Configuration files
 *.ini
 *.cfg
 *.env
+local_settings.py  # Django local settings
+instance/          # Flask instance folder
+
+# Data files
+*.sqlite3
+*.jsonl  # JSON Lines files
 
 # Log files
 *.log
 
-# System files
+# macOS system files
 .DS_Store
 
-# IDE-specific files (example for PyCharm)
-.idea/
+# IDE-specific files
+.vscode/  # Visual Studio Code
+.idea/    # PyCharm
+*.iml    # PyCharm module files
+.project # Eclipse project files
+.pydevproject # Eclipse pydev files
+
+# Testing/debugging
+.pytest_cache/
+htmlcov/
+.coverage
+
+# Distribution files
+dist/
+build/
+*.egg-info/
