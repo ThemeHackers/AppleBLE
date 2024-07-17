@@ -13,9 +13,9 @@
 Thanks to [0DayCTF](https://github.com/0dayctf) the random option has been added!<br> 
 <br>
 *To run with random :* <br>
-```python3 app.py --random``` <br>
+```sudo python3 start.py --random``` <br>
 *or* <br>
-```python3 app.py -r -i 20``` <br>
+```sudo python3 start.py -r -i 20``` <br>
 to set to it to random and the time interval to 20ms, making it more spammy.<br>
 <br>
 
