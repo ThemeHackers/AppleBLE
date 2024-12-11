@@ -6,3 +6,4 @@ netifaces
 prettytable
 libarchive-c
 ctypescrypto
+tqdm
