@@ -6,7 +6,27 @@ import argparse
 from time import sleep
 import bluetooth._bluetooth as bluez
 from utils.bluetooth_utils import (toggle_device, start_le_advertising, stop_le_advertising)
+import colorama
 
+colorama.init()
+def banner():
+    logo = colorama.Fore.BLUE + r"""
+   _____                .__        __________.____     ___________
+  /  _  \ ______ ______ |  |   ____\______   \    |    \_   _____/
+ /  /_\  \\____ \\____ \|  | _/ __ \|    |  _/    |     |    __)_ 
+/    |    \  |_> >  |_> >  |_\  ___/|    |   \    |___  |        \
+\____|__  /   __/|   __/|____/\___  >______  /_______ \/_______  /
+        \/|__|   |__|             \/       \/        \/        \/ 
+        
+               v1.0
+                                Author; ThemeHackers
+                                
+                    Credit by hexway/
+                                
+                                 
+"""                     
+    print(logo)
+banner()
 help_desc = '''
 AirPods advertise spoofing PoC
 ---chipik
