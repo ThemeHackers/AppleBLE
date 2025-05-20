@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apple Proximity Pairing Spoofer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .animate-pulse-slow {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        .toast {
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #3b82f6, #10b981);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        .btn-primary {
+            transition: all 0.2s ease-in-out;
+        }
+        .btn-primary:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-gray-100 min-h-screen flex flex-col font-sans">
+    <header class="bg-white shadow-sm">
+        <div class="container mx-auto px-4 py-6">
+            <h1 class="text-4xl font-extrabold text-center gradient-text">Apple Proximity Pairing Spoofer</h1>
+            <p class="text-gray-600 text-center mt-2">Simulate Apple device pairing signals with ease</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 flex-grow">
+        <div class="max-w-lg mx-auto">
+            <div class="bg-white rounded-2xl shadow-lg p-8 card-hover">
+                <div class="mb-6">
+                    <h2 class="text-2xl font-semibold text-gray-800">Control Panel</h2>
+                    <p class="text-gray-500 text-sm mt-1">Configure and manage your spoofing settings below.</p>
+                </div>
+                <div class="space-y-6">
+                    <div>
+                        <label for="option" class="block text-gray-700 font-medium mb-2" title="Select a device to spoof">Select Device:</label>
+                        <select id="option" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition duration-200 bg-gray-50" aria-label="Select device to spoof">
+                            <option value="">Select an option</option>
+                            {% for key, value in bt_data_options.items() %}
+                                <option value="{{ key }}">{{ key }}: {{ value }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label for="interval" class="block text-gray-700 font-medium mb-2" title="Set advertising interval in milliseconds">Interval (ms):</label>
+                        <input type="number" id="interval" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition duration-200 bg-gray-50" value="200" min="100" aria-label="Advertising interval in milliseconds">
+                    </div>
+                    <div>
+                        <label class="flex items-center cursor-pointer">
+                            <input type="checkbox" id="random" class="mr-2 h-5 w-5 text-blue-600 focus:ring-blue-400 rounded" onchange="updateUI()" aria-label="Enable random device selection">
+                            <span class="text-gray-700 font-medium">Random Mode</span>
+                        </label>
+                    </div>
+                    <div class="flex space-x-4">
+                        <button class="bg-blue-600 text-white px-6 py-3 rounded-lg btn-primary focus:ring-2 focus:ring-blue-400 focus:outline-none flex items-center justify-center" onclick="startAdvertising()" aria-label="Start advertising">
+                            <svg id="start-spinner" class="hidden h-5 w-5 mr-2 animate-spin" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Start Advertising
+                        </button>
+                        <button class="bg-red-600 text-white px-6 py-3 rounded-lg btn-primary focus:ring-2 focus:ring-red-400 focus:outline-none" onclick="stopAdvertising()" aria-label="Stop advertising">Stop Advertising</button>
+                    </div>
+                    <div class="mt-6">
+                        <p class="text-gray-700 font-medium">Status: <span id="status" class="font-semibold text-blue-600">Idle</span></p>
+                        <div id="current-data" class="mt-2 hidden">
+                            <p class="text-gray-700">Current Device: <span id="data-name" class="font-semibold"></span></p>
+                            <p class="text-gray-600 text-sm break-all">Hex: <span id="hex-data"></span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Help Section -->
+            <div class="mt-8 bg-white rounded-2xl shadow-lg p-8 card-hover">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4">How to Use</h2>
+                <p class="text-gray-600 mb-4">This tool simulates Apple device proximity pairing signals. Follow these steps:</p>
+                <ul class="list-disc list-inside text-gray-600 space-y-2">
+                    <li>Select a device from the dropdown or enable Random Mode.</li>
+                    <li>Set the advertising interval (minimum 200ms).</li>
+                    <li>Click "Start Advertising" to begin spoofing.</li>
+                    <li>Monitor the status and current device data below.</li>
+                    <li>Click "Stop Advertising" to halt the process.</li>
+                </ul>
+                <p class="text-gray-500 text-sm mt-4">Note: Ensure your hardware supports Bluetooth Low Energy (BLE) for optimal performance.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-4">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-sm">v1.0 | Developed by ThemeHackers | Credit: hexway</p>
+            <p class="text-xs mt-1">For support, contact <a href="mailto:tigerzaza5678@gmail.com" class="underline hover:text-blue-300">tigerzaza5678@gmail.com</a></p>
+        </div>
+    </footer>
+
+    <div id="toast" class="fixed bottom-4 right-4 bg-gray-800 text-white px-4 py-3 rounded-lg shadow-lg hidden toast flex items-center">
+        <svg id="toast-icon" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+        <span id="toast-message"></span>
+    </div>
+
+    <script>
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+            const toastIcon = document.getElementById('toast-icon');
+            toastMessage.textContent = message;
+            toast.classList.remove('hidden', isError ? 'bg-green-600' : 'bg-gray-800');
+            toast.classList.add(isError ? 'bg-red-600' : 'bg-green-600');
+            toastIcon.innerHTML = isError
+                ? `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />`
+                : `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />`;
+            toast.classList.remove('opacity-0', 'translate-y-4');
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-4');
+                setTimeout(() => toast.classList.add('hidden'), 300);
+            }, 3000);
+        }
+
+        function updateUI() {
+            const random = document.getElementById('random').checked;
+            document.getElementById('option').disabled = random;
+            fetchStatus();
+        }
+
+        async function fetchStatus() {
+            try {
+                const response = await fetch('/api/status');
+                const data = await response.json();
+                const statusEl = document.getElementById('status');
+                const currentDataEl = document.getElementById('current-data');
+                const dataNameEl = document.getElementById('data-name');
+                const hexDataEl = document.getElementById('hex-data');
+
+                statusEl.textContent = data.status === 'advertising' ? 'Advertising' : 'Idle';
+                statusEl.classList.toggle('animate-pulse-slow', data.status === 'advertising');
+                statusEl.classList.toggle('text-blue-600', data.status === 'advertising');
+                statusEl.classList.toggle('text-gray-600', data.status !== 'advertising');
+                if (data.status === 'advertising') {
+                    currentDataEl.classList.remove('hidden');
+                    dataNameEl.textContent = data.data_name;
+                    hexDataEl.textContent = data.hex_data;
+                } else {
+                    currentDataEl.classList.add('hidden');
+                }
+            } catch (error) {
+                showToast('Failed to fetch status', true);
+            }
+        }
+
+        async function startAdvertising() {
+            const option = document.getElementById('option').value;
+            const interval = document.getElementById('interval').value;
+            const random = document.getElementById('random').checked;
+            const startButton = document.querySelector('button[onclick="startAdvertising()"]');
+            const spinner = document.getElementById('start-spinner');
+
+            if (!random && !option) {
+                showToast('Please select a device or enable random mode', true);
+                return;
+            }
+
+            if (parseInt(interval) < 100) {
+                showToast('Interval must be at least 100 ms', true);
+                return;
+            }
+
+            startButton.disabled = true;
+            spinner.classList.remove('hidden');
+            try {
+                const response = await fetch('/api/start', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ option, interval: parseInt(interval), random })
+                });
+                const data = await response.json();
+                if (data.status === 'error') {
+                    showToast(data.message, true);
+                } else {
+                    showToast(data.message);
+                    fetchStatus();
+                }
+            } catch (error) {
+                showToast('Failed to start advertising', true);
+            } finally {
+                startButton.disabled = false;
+                spinner.classList.add('hidden');
+            }
+        }
+
+        async function stopAdvertising() {
+            const stopButton = document.querySelector('button[onclick="stopAdvertising()"]');
+            stopButton.disabled = true;
+            try {
+                const response = await fetch('/api/stop', {
+                    method: 'POST'
+                });
+                const data = await response.json();
+                if (data.status === 'error') {
+                    showToast(data.message, true);
+                } else {
+                    showToast(data.message);
+                    fetchStatus();
+                }
+            } catch (error) {
+                showToast('Failed to stop advertising', true);
+            } finally {
+                stopButton.disabled = false;
+            }
+        }
+
+
+        setInterval(fetchStatus, 5000);
+        fetchStatus();
+    </script>
+</body>
+</html>
